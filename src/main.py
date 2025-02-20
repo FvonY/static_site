@@ -1,6 +1,7 @@
 from textnode import TextNode, TextType
 from utils import *
 from blockutils import *
+from htmlutils import *
 
 def main():
     # textnode = TextNode("Node name", TextType.BOLD, "https://www.google.com")
@@ -20,17 +21,18 @@ def main():
     # text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
     # print(text_to_textnodes(text))
     
-    print(block_to_block_type("### Hallo"))
-    print(block_to_block_type("Ne, der nicht"))
-    print(block_to_block_type("######## Kein Heading"))
-    print(block_to_block_type("- eins\n- zwei"))
-    print(block_to_block_type("1. erstens\n2. zweitens"))
-    print(block_to_block_type("```bool echte() { return false; }```"))
-    print(block_to_block_type("> No amount of money ever bought a second of time\n> Alohomora"))
-    print(block_to_block_type("######## Kein Heading"))
+    # print(block_to_block_type("### Hallo"))
+    # print(block_to_block_type("Ne, der nicht"))
+    # print(block_to_block_type("######## Kein Heading"))
+    # print(block_to_block_type("- eins\n- zwei"))
+    # print(block_to_block_type("1. erstens\n2. zweitens"))
+    # print(block_to_block_type("```bool echte() { return false; }```"))
+    # print(block_to_block_type("> No amount of money ever bought a second of time\n> Alohomora"))
+    # print(block_to_block_type("######## Kein Heading"))
 
-    
-    pass
+    with open("src/markdown.md", "r") as markdown:
+        markdown_to_html_node(markdown.read())
+    markdown.close()
 
 
 if __name__ == "__main__":

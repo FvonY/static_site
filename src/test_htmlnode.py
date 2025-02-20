@@ -45,5 +45,5 @@ class TestHTMLNode(unittest.TestCase):
         )
         self.assertEqual(
             node.__repr__(),
-            "HTMLNode(p, What a strange world, children: None, {'class': 'primary'})",
+            "HTMLNode(p, What a strange world, children: None, props: {'class': 'primary'})",
         )
