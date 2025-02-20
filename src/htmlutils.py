@@ -56,8 +56,9 @@ def handle_ordered_list_to_html(block):
 def handle_code_to_html(block):
     text = block[3:-3]
     
-    sections = text.split("\n")
-    text = " ".join(sections)
+    #sections = text.split("\n")
+    #text = " ".join(sections)
+    text = text.lstrip("\n")
     
     code_node = ParentNode("code", text_to_children(text))
     return ParentNode("pre", [code_node])
@@ -118,8 +119,7 @@ def markdown_to_html_node(markdown):
     
     mother_node = ParentNode("div", nodes)
     
-    print(mother_node.to_html())
-    for node in nodes:
-        print(node.to_html())
-            
-    pass
+    # print(mother_node.to_html())
+    # for node in nodes:
+    #     print(node.to_html())
+    return mother_node

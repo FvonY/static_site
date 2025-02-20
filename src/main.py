@@ -2,37 +2,70 @@ from textnode import TextNode, TextType
 from utils import *
 from blockutils import *
 from htmlutils import *
+from os import mkdir, listdir
+from os.path import exists, join, isfile
+from shutil import copy, rmtree, copytree
+import re
+
+
+def copy_dir(source_dir, target_dir):
+    rmtree(target_dir)
+    #mkdir(target_dir)
+    copytree(source_dir, target_dir)
+    
+    
+def extract_title(markdown):
+    title = re.findall(r"#{1} (.*){1}", markdown)[0]
+    return title.strip()
+
+
+def generate_page(from_path, template_path, dest_path):
+    print(f"Generating from {from_path} to {dest_path} using {template_path}")
+    markdown = ""
+    with open(from_path, "r") as md_file:
+        markdown = md_file.read()
+    md_file.close()
+    
+    html = markdown_to_html_node(markdown).to_html()
+    
+    template = ""
+    with open(template_path, "r") as template_file:
+        template = template_file.read()
+    template_file.close()
+    
+    page = template.replace("{{ Title }}", extract_title(markdown))
+    page = page.replace("{{ Content }}", html)
+    
+    with open(dest_path, "w") as dest_file:
+        dest_file.write(page)
+    dest_file.close()
+    
+    # print(html)
+    
+    
+def generate_pages_recursive(content_dir_path, template_path, dest_dir_path):
+    dir = listdir(content_dir_path)
+    print(dir)
+    for d in dir:
+        print(d, isfile(content_dir_path+"/"+d))
+        if isfile(content_dir_path+"/"+d):
+            if not exists(dest_dir_path):
+                mkdir(dest_dir_path)
+            generate_page(content_dir_path+"/index.md", template_path, dest_dir_path+"/index.html")
+        else:
+            generate_pages_recursive(content_dir_path+"/"+d, template_path, dest_dir_path+"/"+d)
+    pass
+
 
 def main():
-    # textnode = TextNode("Node name", TextType.BOLD, "https://www.google.com")
-    # print(textnode)
+    # with open("src/markdown.md", "r") as markdown:
+    #     markdown_to_html_node(markdown.read())
+    # markdown.close()
     
-    # node1 = TextNode("Hallo, ![schwarzes ross auf rotem grund](https://ferrari.com) und so weiter", TextType.TEXT)
-    # node2 = TextNode("Hier ist nichts", TextType.TEXT)
-    # node3 = TextNode("Es gibt erstens ![erster bild text](https://erstesbild.com) und zweites ![https://zweiter bild text](zweitesbild.com)", TextType.TEXT)
-    # node4 = TextNode("![only image](https://onlyimage.com)", TextType.TEXT)
-    
-    # nodes = [node1, node2, node3, node4]
-    
-    # split_nodes = split_nodes_image(nodes)
-    # for node in split_nodes:
-    #     print(node)
-    
-    # text = "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-    # print(text_to_textnodes(text))
-    
-    # print(block_to_block_type("### Hallo"))
-    # print(block_to_block_type("Ne, der nicht"))
-    # print(block_to_block_type("######## Kein Heading"))
-    # print(block_to_block_type("- eins\n- zwei"))
-    # print(block_to_block_type("1. erstens\n2. zweitens"))
-    # print(block_to_block_type("```bool echte() { return false; }```"))
-    # print(block_to_block_type("> No amount of money ever bought a second of time\n> Alohomora"))
-    # print(block_to_block_type("######## Kein Heading"))
-
-    with open("src/markdown.md", "r") as markdown:
-        markdown_to_html_node(markdown.read())
-    markdown.close()
+    # print("\n")
+    # copy_dir("./static/", "./public/")
+    # generate_page("./content/index.md", "template.html", "./public/index.html")
+    generate_pages_recursive("./content", "template.html", "./public")
 
 
 if __name__ == "__main__":
