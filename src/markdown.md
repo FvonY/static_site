@@ -15,6 +15,13 @@ Lorem ipsum further reading: [Lorem ipsum](https://www.loremipsum.de/)
 [xkcd](https://www.xkcd.com)
 ![xkcd-image](https://imgs.xkcd.com/comics/km3net_2x.png)
 
+```
+bool echte() { return false; }
+```
+
+> Herr Ribbeck auf Ribbeck im Havelland.
+> Ein Birnbaum in seinem Garten stand.
+
 *grins*
 **RUMS**
  
